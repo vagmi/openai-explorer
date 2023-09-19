@@ -1,0 +1,55 @@
+To further refine your Value Proposition Canvas, please answer the following questions:
+
+For Customer Profile:
+1. Customer Jobs: What functional, emotional, or social jobs is the customer trying to get done?
+2. Pains: What negative experiences, risks, or obstacles does the customer encounter or fear?
+3. Gains: What positive outcomes or benefits does the customer seek?
+
+For Value Map:
+4. Products and Services: List the products or services your offering consists of.
+5. Pain Relievers: How does your product relieve customer pains?
+6. Gain Creators: How does your product create customer gains?
+
+Please provide your responses in the format:
+1: [Your answer]
+2: [Your answer]
+...
+6: [Your answer]
+```
+
+---
+
+```typescript
+type ValuePropositionCanvas = {
+    customerProfile: {
+        customerJobs: string[],
+        pains: string[],
+        gains: string[]
+    },
+    valueMap: {
+        productsAndServices: string[],
+        painRelievers: string[],
+        gainCreators: string[]
+    }
+}
+```
+
+Provide your output only in the following JSON format.
+
+```json
+{
+  "ValuePropositionCanvas": {
+    "customerProfile": {
+      "customerJobs": ["User answer for question 1"],
+      "pains": ["User answer for question 2"],
+      "gains": ["User answer for question 3"]    },
+    "valueMap": {
+      "productsAndServices": ["User answer for question 4"],
+      "painRelievers": ["User answer for question 5"],
+      "gainCreators": ["User answer for question 6"]
+    }
+  }
+}
+```
+
+This JSON output can be used in downstream tools to link with the existing Business Model Canvas, integrate with other systems, or further analyze your startup's value proposition.
