@@ -28,6 +28,7 @@ impl<Fns: FunctionRegistry + Send + Sync> FunctionStepDefinition<Fns> {
         let functions = self.functions.function_definitions();
         let fns = functions.iter().map(|f| f.to_function_args()).collect::<Result<Vec<ChatCompletionFunctions>>>()?;
         tracing::debug!("functions {:?}", fns);
+        tracing::debug!("messages {:?}", msgs);
         let request = CreateChatCompletionRequestArgs::default()
             .max_tokens(1024u16)
             .model("gpt-3.5-turbo-0613")
