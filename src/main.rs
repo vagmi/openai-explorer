@@ -104,6 +104,69 @@ impl FunctionRegistry for VenueBotFunctions {
 
 #[tokio::main]
 async fn main() {
+    let mut rl = DefaultEditor::new().unwrap();
+    let client = Client::new();
+    let sarcastic_prompt = include_str!("sarcastic_bot_prompt.txt");
+
+    let mut bot = Bot::<VenueBotFunctions>::new(String::from("consultant_gpt"), vec![
+                           StepDefinition::Simple(SimpleStepDefinition::new(String::from(sarcastic_prompt), String::new())),
+    ]);
+    // let messages = bot.execute(String::from("Can you expand on the idea of creating a tool for prompt engineers to quickly expose their prompt as an API."), client).await.unwrap();
+    loop {
+        let input = rl.readline(">> ");
+        match input {
+            Ok(input) => {
+                let messages = bot.execute(input, client.clone()).await.unwrap();
+                //filter out the last assistant messages
+                if let Some(msg) = messages.iter()
+                    .filter(|m| {
+                        m.role == Role::Assistant
+                    }).last() {
+                        println!("<< {}", msg.content.clone().map_or(String::from("No content"), |c| {c}));
+                    }
+            },
+            Err(_) => {
+                println!("Error");
+                break;
+            }
+        }
+    }
+}
+async fn bmc_main() {
+    let mut rl = DefaultEditor::new().unwrap();
+    let client = Client::new();
+    let bmc_prompt = include_str!("bmc_prompt.txt");
+    let value_prop_prompt = include_str!("value_proposition_prompt.txt");
+
+    let mut bot = Bot::<VenueBotFunctions>::new(String::from("consultant_gpt"), vec![
+                           StepDefinition::Simple(SimpleStepDefinition::new(String::from(bmc_prompt), String::new())),
+                           StepDefinition::Simple(
+                               SimpleStepDefinition::new(String::from(value_prop_prompt), 
+                                                         String::from("Can you please create a value proposition canvas for me?")))
+    ]);
+    // let messages = bot.execute(String::from("Can you expand on the idea of creating a tool for prompt engineers to quickly expose their prompt as an API."), client).await.unwrap();
+    loop {
+        let input = rl.readline(">> ");
+        match input {
+            Ok(input) => {
+                let messages = bot.execute(input, client.clone()).await.unwrap();
+                //filter out the last assistant messages
+                if let Some(msg) = messages.iter()
+                    .filter(|m| {
+                        m.role == Role::Assistant
+                    }).last() {
+                        println!("<< {}", msg.content.clone().map_or(String::from("No content"), |c| {c}));
+                    }
+            },
+            Err(_) => {
+                println!("Error");
+                break;
+            }
+        }
+    }
+}
+
+async fn functions_main() {
     tracing_subscriber::fmt().with_env_filter(EnvFilter::from_default_env()).init();
     let mut rl = DefaultEditor::new().unwrap();
     let client = Client::new();
